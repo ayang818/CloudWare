@@ -1,4 +1,4 @@
-from cloudware_client_py.exception.code import ErrorCode
+from cloudware_client.exception.code import ErrorCode
 
 
 class SolarException(Exception):

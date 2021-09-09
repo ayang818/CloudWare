@@ -1,5 +1,5 @@
-from cloudware_client_py.exception.code import ErrorCode
-from cloudware_client_py.exception.exception import SolarException
+from cloudware_client.exception.code import ErrorCode
+from cloudware_client.exception.exception import SolarException
 
 
 class BaseTarget(object):

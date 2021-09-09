@@ -1,7 +1,8 @@
-from cloudware_client_py.exception.code import ErrorCode
-from cloudware_client_py.exception.exception import SolarException
-from cloudware_client_py.core.target.base_target import BaseTarget
+from cloudware_client.exception.code import ErrorCode
+from cloudware_client.exception.exception import SolarException
+from cloudware_client.core.target.base_target import BaseTarget
 import time
+
 
 class BaseSideCar(object):
 
@@ -16,8 +17,7 @@ class BaseSideCar(object):
         while True:
             self.process()
             time.sleep(interval)
-            
-    
+
     def process(self):
         """
         每次轮询做什么处理
