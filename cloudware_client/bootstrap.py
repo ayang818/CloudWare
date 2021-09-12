@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, os.path.join(__file__, "..\\.."))
 
 import logging
-from cloudware_client.const.strategy import sys_2_feature_dict, feature_discription
+from cloudware_client.const.strategy import sys_2_feature_dict, feature_description
 
 
 def get_sys():
@@ -31,7 +31,7 @@ def start():
 你的命令有\n
         """
         for k, v in features.items():
-            tips += "%s   %s\n" % (k, feature_discription.get(k))
+            tips += "%s   %s\n" % (k, feature_description.get(k))
         print(tips)
         exit(0)
     if not features:

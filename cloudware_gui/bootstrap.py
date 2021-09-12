@@ -1,9 +1,11 @@
 import wx
 from manager.gui import GuiManager
+from conf.conf import check_conf_init
+
+check_conf_init()
 
 
 class MainAPP(wx.App):
-
 
     def OnInit(self):
         self.manager = GuiManager(self.UpdateUI)
