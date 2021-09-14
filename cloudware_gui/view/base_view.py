@@ -1,9 +1,12 @@
 import wx
 
 
-class RegistHotKeyWindow(wx.Frame):
+class BaseView(wx.Frame):
+    """
+    任何界面都要支持热键事件
+    """
     def __init__(self):
-        super(RegistHotKeyWindow, self).__init__(None, size=(400, 300))
+        super().__init__(None, title='', size=(160 * 3, 90 * 3))
         self.hotkey = wx.NewIdRef()  # 创建id
         self.panel = wx.Panel(self)  # 创建面板
         self.RegisterHotKey(self.hotkey, wx.MOD_ALT, wx.WXK_DOWN)  # 注册热键

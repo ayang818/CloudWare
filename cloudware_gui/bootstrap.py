@@ -1,6 +1,7 @@
 import logging
 import wx
-from manager.gui import GuiManager
+from wx.core import App
+from manager.view_manager import ViewManager
 from cloudware_gui.conf.conf import check_conf_init
 from cloudware_gui.util.log import config_logger
 
@@ -8,12 +9,16 @@ from cloudware_gui.util.log import config_logger
 config_logger()
 # 检查配置文件是否初始化
 conf = check_conf_init()
+# import 这个 app 做操作
+app = None
 logging.info("conf object is %s", conf.__dict__)
+
 
 class MainAPP(wx.App):
 
     def OnInit(self):
-        self.manager = GuiManager(self.UpdateUI)
+        self.locale = wx.Locale(wx.LANGUAGE_CHINESE)
+        self.manager = ViewManager()
         self.frame = self.manager.get_frame(0)
         self.frame.Show()
         return True
