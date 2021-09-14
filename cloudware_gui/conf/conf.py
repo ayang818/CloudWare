@@ -3,8 +3,9 @@ from cloudware_gui.util.util import unmarshal_json, marshal_obj
 import os
 import json
 import uuid
+import logging
 
-base_dir = "~/.cloudware/"
+base_dir = os.path.join(os.path.expanduser('~'), ".cloudware/")
 base_conf_file_name = 'conf.json'
 
 
@@ -19,19 +20,29 @@ class CloudWareConf(object):
     paste_hot_key = "ALT ALT"
 
 
-def check_conf_init():
+def check_conf_init() -> CloudWareConf:
+    # 根路径是否存在
     if not os.path.exists(base_dir):
-        os.mkdir(base_dir)
+        logging.warn("根路径不存在，创建~")
+        os.makedirs(base_dir)
     base_conf_file = os.path.join(base_dir, base_conf_file_name)
     if not os.path.exists(base_conf_file):
+        logging.warn("配置文件不存在，初始化~")
+        # 写入配置文件
         with open(base_conf_file, "w") as bf:
             json_text = marshal_obj(CloudWareConf())
             json_dict = json.loads(json_text)
             # 初始化客户端私钥, 直接使用 uuid 即可
             # TODO 密钥是否需要带上 用户信息
-            json_dict.set('secret_key', uuid.uuid4().hex)
+            json_dict['secret_key'] = uuid.uuid4().hex
             json_text = json.dumps(json_dict)
             bf.write(json_text)
+            logging.info("写入配置文件=%s", json_text)
+    conf_obj = None
+    with open(base_conf_file, 'r') as cf:
+        json_data = cf.read()
+        conf_obj = unmarshal_json(json_data, CloudWareConf)
+    return conf_obj
 
 
 if __name__ == '__main__':

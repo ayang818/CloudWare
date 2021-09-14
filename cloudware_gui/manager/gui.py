@@ -19,6 +19,7 @@ class GuiManager(object):
 
     def create_frame(self, frame_id):
         if frame_id == 0:
-            return setting.(parent=None, id=frame_id, UpdateUI=self.update_ui)
+            # return setting.(parent=None, id=frame_id, UpdateUI=self.update_ui)
+            pass
         elif frame_id == 1:
             return contentFrame.ContentFrame(parent=None, id=frame_id, UpdateUI=self.update_ui)

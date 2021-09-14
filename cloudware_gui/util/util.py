@@ -15,9 +15,9 @@ def unmarshal_json(json_str, obj):
     except Exception as e:
         logging.info("json syntax error")
     obj_instance = None
+    obj_instance = obj()
     # TODO 按照 ConfObj 为准
     for k, v in json_dict.items():
-        obj_instance = obj()
         setattr(obj_instance, k, v)
     logging.debug("str unmarshal=%s", obj_instance.__dict__)
     return obj_instance

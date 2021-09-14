@@ -1,9 +1,14 @@
+import logging
 import wx
 from manager.gui import GuiManager
-from conf.conf import check_conf_init
+from cloudware_gui.conf.conf import check_conf_init
+from cloudware_gui.util.log import config_logger
 
-check_conf_init()
-
+# 初始化日志
+config_logger()
+# 检查配置文件是否初始化
+conf = check_conf_init()
+logging.info("conf object is %s", conf.__dict__)
 
 class MainAPP(wx.App):
 
