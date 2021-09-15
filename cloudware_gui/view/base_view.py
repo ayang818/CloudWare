@@ -1,13 +1,17 @@
 import logging
+import sys
+
 import wx
-from cloudware_client.core.sidecar.clipboard_sidecar import 
+from cloudware_client.core.sidecar.clipboard_sidecar import HistoryUtil
+
 
 class BaseView(wx.Frame):
     """
     任何界面都要支持热键事件
     """
+
     def __init__(self):
-        super().__init__(None, title='配置中心', size=(160 * 3, 90 * 3))
+        super().__init__(None, title='CloudWare0.0.1', size=(160 * 3, 90 * 3))
         self.panel = wx.Panel(self)
         self.quickpaste = wx.NewIdRef()
         # 注册快速粘贴快捷键
@@ -15,31 +19,33 @@ class BaseView(wx.Frame):
         self.Bind(wx.EVT_HOTKEY, self.quick_paste, id=self.quickpaste)
         # 注册关机事件快捷键
         self.Bind(wx.EVT_CLOSE, self.on_close)
-        # 关联上历史记录
-        colorList = ["红", "绿", "蓝", "白", "紫"]
+        # 关联历史记录
+        self.history_record_list = HistoryUtil.batch_get_records(start_pos=0, number=10)
         # 关联ListBox
-        self.listBox = wx.ListBox(self.panel,-1,(10,10),(80,110),colorList,wx.LB_SINGLE)
+        self.listBox = wx.ListBox(self.panel, -1, (0, 0), (160 * 3, 90 * 3), self.history_record_list, wx.LB_SINGLE)
         self.listBox.SetSelection(2)
-
-        
+        self.Center()
 
     def quick_paste(self, event):
         logging.info('呼出快速粘贴')
         self.update_ui()
-        self.Show(True)
         # 响应热键事件
-        self.SetWindowStyle(wx.STAY_ON_TOP)
+        if sys.platform == 'win32':
+            self.SetWindowStyle(wx.STAY_ON_TOP | wx.DEFAULT_FRAME_STYLE)
+        elif sys.platform == 'darwin':
+            self.SetWindowStyle(wx.STAY_ON_TOP)
         self.SetWindowStyle(wx.DEFAULT_FRAME_STYLE)
-    
-    def update_ui(self):
-        pass
+        self.Show(True)
 
-    def on_close(self,event):  # 关闭事件
+    def update_ui(self):
+        self.history_record_list = HistoryUtil.batch_get_records(start_pos=0, number=10)
+
+    def on_close(self, event):  # 关闭事件
         # print('注销热键')
         # self.UnregisterHotKey(self.quickpaste)  # 注销热键
         # self.Destroy()  # 销毁窗口
         logging.info('close')
-        self.Show(False)      
+        self.Show(False)
 
 #
 # app = wx.App()

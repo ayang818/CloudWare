@@ -1,1 +1,2 @@
 wxpython==4.1.1
+file_read_backwards==2.0.0

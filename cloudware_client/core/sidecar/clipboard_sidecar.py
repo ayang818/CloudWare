@@ -1,14 +1,16 @@
-import os
-import sys
-from cloudware_gui.conf.conf import CloudWareConf
-from cloudware_client.core.target.clipboard_target import ClipBoardTarget
-from cloudware_client.core.sidecar.base_sidecar import BaseSideCar
-import logging
-from PIL import ImageGrab, Image
 import io
+import logging
+import os
+
+from PIL import ImageGrab, Image
+from file_read_backwards import FileReadBackwards
+
+from cloudware_client.core.sidecar.base_sidecar import BaseSideCar
+from cloudware_client.core.target.clipboard_target import ClipBoardTarget
 from cloudware_gui.conf.conf import get_base_conf_obj
 
-base_spilter = "|.#.#.#.#.|"
+base_spilter = "|.#.#.#.#.|\n"
+
 
 class ClipBoardSideCar(BaseSideCar):
     """
@@ -46,10 +48,10 @@ class ClipBoardSideCar(BaseSideCar):
                     logging.info('init history file')
             if is_pic:
                 # TODO 暂时不处理图片
-                return 
-            # TODO 写性能优化
+                return
+                # TODO 写性能优化
             with open(n_conf.history_file_path, 'a') as f:
-                f.write(content+'\n'+base_spilter+'\n')
+                f.write(content + '\n' + base_spilter)
             logging.info('suc sync to history file')
             # 2. send to remote
         else:
@@ -63,19 +65,29 @@ class HistoryUtil(object):
     cache_record_list = []
 
     @classmethod
-    def basch_get_records(cls, start_pos=0, number=10):
+    def batch_get_records(cls, start_pos=0, number=10):
         """
         start_pos : 起始位置
         number : 读几条
         """
-        cur_pos = 0
+        records = []
         with open(get_base_conf_obj().history_file_path, 'r') as f:
-            record = None
-            buffer = f.readline()
-            
-            if buffer != base_spilter:
-                record += buffer
-            else:
-                # 如果是分隔符，pos += 1；清空 buffer
-                cur_pos += 1
-
+            record = ''
+            cur_pos = 0
+            lines = f.readlines()
+            lines.reverse()
+            for buffer in lines:
+                if buffer != base_spilter:
+                    record = buffer + record
+                else:
+                    # 如果是分隔符，pos += 1；
+                    cur_pos += 1
+                    # 忽略结尾的 base_spilter
+                    if cur_pos == 1:
+                        continue
+                    records.append(record)
+                    # 清空 buffer
+                    record = ''
+                    if cur_pos > number:
+                        break
+        return [str(rec + 1) + ' ' + records[rec] for rec in range(0, len(records))]

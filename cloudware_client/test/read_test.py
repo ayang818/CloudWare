@@ -1,4 +1,4 @@
-with open('read', 'r') as f:
+with open('read.txt', 'r') as f:
     buffer = f.readline()
     if buffer == '':
         print('1')
