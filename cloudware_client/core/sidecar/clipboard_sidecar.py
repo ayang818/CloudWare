@@ -3,7 +3,6 @@ import logging
 import os
 
 from PIL import ImageGrab, Image
-from file_read_backwards import FileReadBackwards
 
 from cloudware_client.core.sidecar.base_sidecar import BaseSideCar
 from cloudware_client.core.target.clipboard_target import ClipBoardTarget
@@ -71,7 +70,11 @@ class HistoryUtil(object):
         number : 读几条
         """
         records = []
-        with open(get_base_conf_obj().history_file_path, 'r') as f:
+        history_file = get_base_conf_obj().history_file_path
+        if not os.path.exists(history_file):
+            with open(history_file, 'w') as f:
+                logging.info("初始化历史数据文件~")
+        with open(history_file, 'r') as f:
             record = ''
             cur_pos = 0
             lines = f.readlines()

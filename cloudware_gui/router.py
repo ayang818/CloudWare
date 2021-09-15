@@ -1,12 +1,6 @@
-from cloudware_gui.view.base_view import BaseView
-
-
-router = {
-    "INDEX": 0,
-    "SECOND": 10000
-}
+from cloudware_gui.const.router_const import INDEX, EMPTY
 
 frame_mapping = {
-    router.get('INDEX'): BaseView,
-    router.get('SECOND'): BaseView
+    INDEX: 'BaseView',
+    EMPTY: 'EmptyView'
 }

@@ -9,6 +9,7 @@ base_dir = os.path.join(os.path.expanduser('~'), ".cloudware/")
 base_conf_file_name = 'conf.json'
 conf = None
 
+
 class CloudWareConf(object):
     secret_key = ""
     # 历史纪录文件路径配置
@@ -23,7 +24,7 @@ class CloudWareConf(object):
 def check_conf_init():
     # 根路径是否存在
     if not os.path.exists(base_dir):
-        logging.warn("根路径不存在，创建~")
+        logging.warning("根路径不存在，创建~")
         os.makedirs(base_dir)
     base_conf_file = os.path.join(base_dir, base_conf_file_name)
     if not os.path.exists(base_conf_file):
@@ -44,13 +45,16 @@ def check_conf_init():
         conf_obj = unmarshal_json(json_data, CloudWareConf)
     set_base_conf_obj(conf_obj)
 
+
 def get_base_conf_obj() -> CloudWareConf:
     global conf
     return conf
 
+
 def set_base_conf_obj(conf_obj):
     global conf
     conf = conf_obj
+
 
 if __name__ == '__main__':
     print(unmarshal_json('{"secret_key": "hellojjl"}', CloudWareConf).__dict__)

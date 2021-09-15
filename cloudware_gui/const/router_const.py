@@ -1,0 +1,2 @@
+INDEX = 0
+EMPTY = 10000
