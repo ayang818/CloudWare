@@ -1,3 +1,4 @@
+import logging
 from cloudware_gui.view.base_view import BaseView
 import wx
 
@@ -43,5 +44,8 @@ class IndexView(BaseView):
         wx.StaticText(panel, -1, "Multi-line text\ncan also\n"  
                 "be right aligned\n\neven with a blank", (220,150),   
                 style=wx.ALIGN_RIGHT)
-        
+        self.Bind(wx.EVT_CLOSE, self.close)
 
+    def close(self, event):
+        logging.info('close')
+        self.Show(False)      

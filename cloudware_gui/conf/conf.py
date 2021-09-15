@@ -7,7 +7,7 @@ import logging
 
 base_dir = os.path.join(os.path.expanduser('~'), ".cloudware/")
 base_conf_file_name = 'conf.json'
-
+conf = None
 
 class CloudWareConf(object):
     secret_key = ""
@@ -20,7 +20,7 @@ class CloudWareConf(object):
     paste_hot_key = "ALT ALT"
 
 
-def check_conf_init() -> CloudWareConf:
+def check_conf_init():
     # 根路径是否存在
     if not os.path.exists(base_dir):
         logging.warn("根路径不存在，创建~")
@@ -42,8 +42,15 @@ def check_conf_init() -> CloudWareConf:
     with open(base_conf_file, 'r') as cf:
         json_data = cf.read()
         conf_obj = unmarshal_json(json_data, CloudWareConf)
-    return conf_obj
+    set_base_conf_obj(conf_obj)
 
+def get_base_conf_obj() -> CloudWareConf:
+    global conf
+    return conf
+
+def set_base_conf_obj(conf_obj):
+    global conf
+    conf = conf_obj
 
 if __name__ == '__main__':
     print(unmarshal_json('{"secret_key": "hellojjl"}', CloudWareConf).__dict__)

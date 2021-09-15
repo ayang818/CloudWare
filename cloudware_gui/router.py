@@ -1,5 +1,4 @@
 from cloudware_gui.view.base_view import BaseView
-from cloudware_gui.view.index_view import IndexView
 
 
 router = {
@@ -8,6 +7,6 @@ router = {
 }
 
 frame_mapping = {
-    router.get('INDEX'): IndexView,
+    router.get('INDEX'): BaseView,
     router.get('SECOND'): BaseView
 }

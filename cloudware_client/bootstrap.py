@@ -21,10 +21,10 @@ def config_logger():
 config_logger()
 
 
-def start():
+def start(command='cp'):
     system = get_sys()
     features = sys_2_feature_dict.get(system)
-    if len(sys.argv) == 1:
+    if not command:
         # 没传参数
         tips = """
 欢迎使用 Cloudware\n
@@ -37,7 +37,7 @@ def start():
     if not features:
         logging.error("暂时不支持 %s 系统", system)
         exit(0)
-    features.get(sys.argv[1]).start_listen()
+    features.get(command).start_listen()
 
 
 if __name__ == '__main__':
