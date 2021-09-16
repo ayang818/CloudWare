@@ -15,6 +15,7 @@ class BaseView(wx.Frame):
     def __init__(self):
         width = 160 * 3
         height = 90 * 3
+        # [done] win 被最小化后无法呼出，直接干掉边框
         super().__init__(None, title='CloudWare0.0.1', size=(width, height), style=wx.SIMPLE_BORDER|wx.TRANSPARENT_WINDOW)
         self.SetMaxSize((width, height))
         self.SetMinSize((width, height))
@@ -26,7 +27,7 @@ class BaseView(wx.Frame):
         # 注册关机事件快捷键
         self.Bind(wx.EVT_CLOSE, self.on_close)
         # 关联历史记录
-        self.history_record_list = HistoryUtil.batch_get_records(start_pos=0, number=10)
+        self.history_record_list = HistoryUtil.batch_get_records(start_pos=0, number=20)
         # 关联ListBox
         self.listBox = wx.ListBox(self.panel, -1, (0, 0), (160 * 3, 90 * 3), self.history_record_list, wx.LB_SINGLE)
         self.Bind(wx.EVT_ICONIZE, self.iconize)
@@ -37,7 +38,6 @@ class BaseView(wx.Frame):
 
     def quick_paste(self, event):
         """
-        TODO win 被最小化后无法呼出
         :param event:
         :return:
         """
@@ -51,6 +51,8 @@ class BaseView(wx.Frame):
             self.SetWindowStyle(wx.STAY_ON_TOP)
         self.SetWindowStyle(wx.SIMPLE_BORDER)
         self.Show(True)
+        self.listBox.SetFocusFromKbd()
+        self.listBox.SetFocus()
 
     # def update_ui(self):
     #     print("update")

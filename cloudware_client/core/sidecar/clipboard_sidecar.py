@@ -64,7 +64,7 @@ class HistoryUtil(object):
     cache_record_list = []
 
     @classmethod
-    def batch_get_records(cls, start_pos=0, number=10):
+    def batch_get_records(cls, start_pos=0, number=20):
         """
         start_pos : 起始位置
         number : 读几条
