@@ -37,7 +37,7 @@ def start(command='cp'):
     if not features:
         logging.error("暂时不支持 %s 系统", system)
         exit(0)
-    features.get(command).start_listen()
+    features.get(command).start_listen(interval=0.5)
 
 
 if __name__ == '__main__':

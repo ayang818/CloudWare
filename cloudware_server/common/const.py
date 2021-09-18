@@ -1,0 +1,1 @@
+BASE_SESSION_ID= 'cloudware_session_id'

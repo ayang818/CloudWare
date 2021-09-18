@@ -15,8 +15,8 @@ class BaseView(wx.Frame):
 
     def __init__(self):
         # 初始化大小
-        self.width = 160 * 3
-        self.height = 90 * 3
+        self.width = 200 * 3
+        self.height = 150 * 3
         super().__init__(None, title='CloudWare0.0.1', size=(self.width, self.height),
                          style=wx.SIMPLE_BORDER | wx.TRANSPARENT_WINDOW)
         self.SetMaxSize((self.width, self.height))
