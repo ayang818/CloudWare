@@ -93,4 +93,4 @@ class HistoryUtil(object):
                     record = ''
                     if cur_pos > number:
                         break
-        return [str(rec + 1) + ' ' + records[rec] for rec in range(0, len(records))]
+        return records
