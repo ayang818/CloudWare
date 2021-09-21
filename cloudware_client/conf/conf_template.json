@@ -1,7 +1,8 @@
 {
+  "device_id": "",
   "secret_key": "",
   "history_file_path": "~/.cloudware/history",
   "history_file_name": "history",
   "pic_cache_path": "~/.cloudware/pic_history/",
-  "paste_hot_key": "ALT ALT"
+  "paste_hot_key": "ALT ALT",
 }

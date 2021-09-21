@@ -2,7 +2,7 @@ import logging
 import sys
 
 import wx
-from cloudware_client.core.sidecar.clipboard_sidecar import HistoryUtil
+from cloudware_client.core.sidecar.clipboard_sidecar import ClipboardUtil
 from cloudware_gui.util.view import ViewUtil
 from cloudware_gui.const.router_const import INDEX, EMPTY
 import pyperclip
@@ -87,7 +87,7 @@ class BaseView(wx.Frame):
 
     def update_history_list_box(self, start_pos, number):
         # init or reInit
-        self.history_record_list = HistoryUtil.batch_get_records(start_pos, number)
+        self.history_record_list = ClipboardUtil.batch_get_records(start_pos, number)
         self.current_idx = 0
         if not self.list_box:
             self.list_box = wx.ListBox(self.panel, -1, (0, 0), (self.width, self.height), self.history_record_list,

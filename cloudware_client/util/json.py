@@ -11,10 +11,10 @@ def unmarshal_json(json_str, obj):
     """
     json_dict = {}
     try:
-        json_dict = json.loads(json_str)
+        json_dict = json.loads(json_str.encode("utf-8"))
     except Exception as e:
-        logging.info("json syntax error")
-    obj_instance = None
+        print("json cast failed")
+        logging.error("json syntax error")
     obj_instance = obj()
     # TODO 按照 ConfObj 为准
     for k, v in json_dict.items():

@@ -54,7 +54,7 @@ def handler(environ, start_response):
         logging.info("post req body=%s", request_body_str)
         params = parse_params(request_body_str, type="json")
     else:
-        status = '403 OK'
+        status = '403 FAILED'
         response_headers = [('Content-type', 'text/plain')]
         start_response(status, response_headers)
         return ['method not support']

@@ -6,9 +6,8 @@ from PIL import ImageGrab, Image
 
 from cloudware_client.core.sidecar.base_sidecar import BaseSideCar
 from cloudware_client.core.target.clipboard_target import ClipBoardTarget
-from cloudware_gui.conf.conf import get_base_conf_obj
-
-base_spilter = "|.#.#.#.#.|\n"
+from cloudware_client.conf.conf import get_base_conf_obj
+from cloudware_client.util.clipboard import base_spliter, ClipboardUtil
 
 
 class ClipBoardSideCar(BaseSideCar):
@@ -31,14 +30,10 @@ class ClipBoardSideCar(BaseSideCar):
                 img.save(img_bytes, 'png')
                 content = img_bytes.getvalue()
                 is_pic = True
-        # 判断是否可以初始化
-        if not self.last_content and HistoryUtil.get_last_record() != content:
-            # 初始化内存 last_content
+        # 判断是否可以初始化 self.last_content
+        if not self.last_content and ClipboardUtil.get_last_record() != content:
             self.last_content = content
-        else:
-            return
-        # 判断是否可以写入 history;
-        # 不为空且最后一条和当前不一致
+        # 判断是否可以写入 history; 不为空且最后一条和当前不一致
         if content and (self.last_content and content != self.last_content):
             logging.info("latest copy=%s", content)
             # 先替换内存
@@ -57,7 +52,7 @@ class ClipBoardSideCar(BaseSideCar):
                 return
                 # TODO 写性能优化
             with open(n_conf.history_file_path, 'a') as f:
-                f.write(content + '\n' + base_spilter)
+                f.write(content + '\n' + base_spliter)
             logging.info('suc sync to history file')
             # 2. send to remote
         else:
@@ -65,44 +60,3 @@ class ClipBoardSideCar(BaseSideCar):
             忽略重复复制
             """
             pass
-
-
-class HistoryUtil(object):
-    cache_record_list = []
-
-    @classmethod
-    def batch_get_records(cls, start_pos=0, number=100):
-        """
-        start_pos : 起始位置
-        number : 读几条
-        """
-        records = []
-        history_file = get_base_conf_obj().history_file_path
-        if not os.path.exists(history_file):
-            with open(history_file, 'w') as f:
-                logging.info("初始化历史数据文件~")
-        with open(history_file, 'r') as f:
-            record = ''
-            cur_pos = 0
-            lines = f.readlines()
-            lines.reverse()
-            for buffer in lines:
-                if buffer != base_spilter:
-                    record = buffer + record
-                else:
-                    # 如果是分隔符，pos += 1；
-                    cur_pos += 1
-                    # 忽略结尾的 base_spilter
-                    if cur_pos == 1:
-                        continue
-                    records.append(record)
-                    # 清空 buffer
-                    record = ''
-                    if cur_pos > number:
-                        break
-        return records
-
-    @classmethod
-    def get_last_record(cls):
-        records = cls.batch_get_records(start_pos=0, number=1)
-        return records[0] if len(records) >= 1 else None

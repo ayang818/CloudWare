@@ -1,8 +1,8 @@
 from cloudware_gui.util import log
-from cloudware_gui.util.util import unmarshal_json, marshal_obj
+from cloudware_client.util.json import unmarshal_json, marshal_obj
 import os
 import json
-import uuid
+import shortuuid
 import logging
 
 base_dir = os.path.join(os.path.expanduser('~'), ".cloudware/")
@@ -11,6 +11,7 @@ conf = None
 
 
 class CloudWareConf(object):
+    device_id = ""
     secret_key = ""
     # 历史纪录文件路径配置
     history_file_path = base_dir + "history"
@@ -19,6 +20,26 @@ class CloudWareConf(object):
     # 图片缓存路径配置
     pic_cache_path = base_dir + "pic_history/"
     paste_hot_key = "ALT ALT"
+
+
+def read_conf_from_file(path):
+    conf_obj = None
+    with open(path, 'r') as cf:
+        json_data = cf.read()
+        conf_obj = unmarshal_json(json_data, CloudWareConf)
+    return conf_obj
+
+
+def get_base_conf_obj() -> CloudWareConf:
+    global conf
+    if not conf:
+        conf = read_conf_from_file(os.path.join(base_dir, base_conf_file_name))
+    return conf
+
+
+def set_base_conf_obj(conf_obj):
+    global conf
+    conf = conf_obj
 
 
 def check_conf_init():
@@ -35,26 +56,17 @@ def check_conf_init():
             json_dict = json.loads(json_text)
             # 初始化客户端私钥, 直接使用 uuid 即可
             # TODO 密钥是否需要带上 用户信息
-            json_dict['secret_key'] = uuid.uuid4().hex
+            json_dict['secret_key'] = shortuuid.ShortUUID().random(length=16)
+            json_dict['device_id'] = shortuuid.ShortUUID().random(length=16)
             json_text = json.dumps(json_dict)
             bf.write(json_text)
             logging.info("写入配置文件=%s", json_text)
     conf_obj = None
-    with open(base_conf_file, 'r') as cf:
-        json_data = cf.read()
-        conf_obj = unmarshal_json(json_data, CloudWareConf)
+    conf_obj = read_conf_from_file(base_conf_file)
     set_base_conf_obj(conf_obj)
 
 
-def get_base_conf_obj() -> CloudWareConf:
-    global conf
-    return conf
-
-
-def set_base_conf_obj(conf_obj):
-    global conf
-    conf = conf_obj
-
+check_conf_init()
 
 if __name__ == '__main__':
     print(unmarshal_json('{"secret_key": "hellojjl"}', CloudWareConf).__dict__)

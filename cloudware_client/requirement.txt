@@ -1,2 +1,4 @@
 pyperclip==1.8.2
 pillow==8.3.2
+pycryptodome==3.10.1
+shortuuid==1.0.1
