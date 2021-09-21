@@ -33,7 +33,7 @@ class ClipBoardSideCar(BaseSideCar):
                 is_pic = True
         # 判断是否可以写入 history
         if content and (not self.last_content or content != self.last_content):
-            logging.info("lastest copy=%s", content)
+            logging.info("latest copy=%s", content)
             # 先替换内存
             self.last_content = content
             # 1. save to localStorage
@@ -64,7 +64,7 @@ class HistoryUtil(object):
     cache_record_list = []
 
     @classmethod
-    def batch_get_records(cls, start_pos=0, number=20):
+    def batch_get_records(cls, start_pos=0, number=100):
         """
         start_pos : 起始位置
         number : 读几条

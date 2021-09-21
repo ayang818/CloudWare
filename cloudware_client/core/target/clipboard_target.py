@@ -6,4 +6,8 @@ import pyperclip
 class ClipBoardTarget(BaseTarget):
 
     def fetch_one(self):
-        return pyperclip.paste()
+        try:
+            return pyperclip.paste()
+        except pyperclip.PyperclipWindowsException as e:
+            return ""
+

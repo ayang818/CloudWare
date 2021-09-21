@@ -31,6 +31,7 @@ class MainAPP(wx.App):
         thread_listener.start()
         return True
 
+
 app: MainAPP = None
 
 

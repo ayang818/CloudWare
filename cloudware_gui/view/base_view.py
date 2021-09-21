@@ -25,7 +25,8 @@ class BaseView(wx.Frame):
 
         # 注册快速粘贴快捷键
         self.quickpaste = wx.NewIdRef()
-        self.RegisterHotKey(self.quickpaste, wx.MOD_ALT, wx.WXK_DOWN)
+        # alt + w
+        self.RegisterHotKey(self.quickpaste, wx.MOD_ALT, 87)
         self.Bind(wx.EVT_HOTKEY, self.quick_paste, id=self.quickpaste)
 
         # 注册关闭事件：关闭事件不关闭进程
@@ -37,7 +38,7 @@ class BaseView(wx.Frame):
         self.list_box = wx.ListBox(self.panel, -1, (0, 0), (self.width, self.height),
                                    self.history_record_list,
                                    wx.LB_SINGLE)
-        self.update_history_list_box(start_pos=0, number=20)
+        self.update_history_list_box(start_pos=0, number=100)
 
         # 绑定键盘按键事件
         self.list_box.Bind(wx.EVT_KEY_DOWN, self.base_keyboard_event)
@@ -47,6 +48,7 @@ class BaseView(wx.Frame):
 
     def base_keyboard_event(self, event):
         key = event.GetKeyCode()
+        # logging.info("code=%s", key)
         if key == wx.WXK_ESCAPE:
             logging.info("close frame")
             self.Show(False)
@@ -59,7 +61,7 @@ class BaseView(wx.Frame):
                 self.current_idx -= 1
                 self.list_box.SetSelection(self.current_idx)
         elif key == 67:
-            # 如果是 C，就复制内容到剪贴板里，然后关闭
+            # 如果是 c，就复制内容到剪贴板里，然后关闭
             pyperclip.copy(self.history_record_list[self.current_idx])
             self.Show(False)
 
@@ -69,7 +71,7 @@ class BaseView(wx.Frame):
         :return:
         """
         logging.info('呼出快速粘贴')
-        self.update_history_list_box(start_pos=0, number=20)
+        self.update_history_list_box(start_pos=0, number=100)
 
         # 响应热键事件
         if sys.platform == 'win32':
