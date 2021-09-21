@@ -110,5 +110,5 @@ class ClipboardUtil(object):
 
 
 if __name__ == '__main__':
-    ClipboardUtil.sync_to_remote("helloworld", "text")
-    ClipboardUtil.sync_from_remote()
+    ClipboardUtil.sync_to_remote("loveu jjl", "text")
+    # ClipboardUtil.sync_from_remote()

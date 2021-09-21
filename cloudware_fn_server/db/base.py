@@ -41,27 +41,25 @@ def get_session():
     global session
     return session
 
+# from sqlalchemy import Column, BigInteger, String
 
-from sqlalchemy import Column, BigInteger, String
+# class CWHistoryRecord(Base, BaseMixedIn):
+#     __tablename__ = 'cw_history_record'
+#     seq_id = Column(BigInteger)
+#     content = Column(String)
+#     user_id = Column(String)
+#     device_id = Column(String)
+#
+#
+# if __name__ == '__main__':
+#     session = get_session()
+#     res = session.query(CWHistoryRecord).filter(CWHistoryRecord.user_id=="yugiofuaysdgfoaijdbhf", CWHistoryRecord.seq_id>=2376451892736).all()
+#     print(res[0].__dict__)
 
-
-class CWHistoryRecord(Base, BaseMixedIn):
-    __tablename__ = 'cw_history_record'
-    seq_id = Column(BigInteger)
-    content = Column(String)
-    user_id = Column(String)
-    device_id = Column(String)
-
-
-if __name__ == '__main__':
-    session = get_session()
-    res = session.query(CWHistoryRecord).filter(CWHistoryRecord.user_id=="yugiofuaysdgfoaijdbhf", CWHistoryRecord.seq_id>=2376451892736).all()
-    print(res[0].__dict__)
-
-    # record = CWHistoryRecord()
-    # record.seq_id = 2376451892736
-    # record.content = "hdf798y711fdsa24d213r"
-    # record.user_id = "yugiofuaysdgfoaijdbhf"
-    # record.device_id = "asdgkuyguiy"
-    # session.add(record)
-    # session.commit()
+# record = CWHistoryRecord()
+# record.seq_id = 2376451892736
+# record.content = "hdf798y711fdsa24d213r"
+# record.user_id = "yugiofuaysdgfoaijdbhf"
+# record.device_id = "asdgkuyguiy"
+# session.add(record)
+# session.commit()
