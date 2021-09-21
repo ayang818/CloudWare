@@ -34,7 +34,8 @@ class GetItemHandler(BaseHandler):
         for record in un_sync_records:
             res.append({
                 'secret_content': record.content,
-                'device_id': record.device_id
+                'device_id': record.device_id,
+                'seq_id': record.seq_id
             })
         return res
 

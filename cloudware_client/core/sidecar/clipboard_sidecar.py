@@ -50,13 +50,15 @@ class ClipBoardSideCar(BaseSideCar):
             if is_pic:
                 # TODO 暂时不处理图片
                 return
-                # TODO 写性能优化
-            with open(n_conf.history_file_path, 'a') as f:
-                f.write(content + '\n' + base_spliter)
+            # TODO 写性能优化
+            ClipboardUtil.write_local_history(content, n_conf)
             logging.info('suc sync to history file')
             # TODO 2. sync to remote
+            # config kaiguan
+            ClipboardUtil.sync_to_remote(content, 'text')
         else:
             """
             忽略重复复制
             """
             pass
+
