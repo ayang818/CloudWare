@@ -31,8 +31,15 @@ class ClipBoardSideCar(BaseSideCar):
                 img.save(img_bytes, 'png')
                 content = img_bytes.getvalue()
                 is_pic = True
-        # 判断是否可以写入 history
-        if content and (not self.last_content or content != self.last_content):
+        # 判断是否可以初始化
+        if not self.last_content and HistoryUtil.get_last_record() != content:
+            # 初始化内存 last_content
+            self.last_content = content
+        else:
+            return
+        # 判断是否可以写入 history;
+        # 不为空且最后一条和当前不一致
+        if content and (self.last_content and content != self.last_content):
             logging.info("latest copy=%s", content)
             # 先替换内存
             self.last_content = content
@@ -94,3 +101,8 @@ class HistoryUtil(object):
                     if cur_pos > number:
                         break
         return records
+
+    @classmethod
+    def get_last_record(cls):
+        records = cls.batch_get_records(start_pos=0, number=1)
+        return records[0] if len(records) >= 1 else None
