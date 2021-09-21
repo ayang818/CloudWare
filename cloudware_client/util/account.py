@@ -27,3 +27,7 @@ class AccountUtil(object):
             cls.secret_key = get_base_conf_obj().secret_key
         return cls.secret_key
 
+
+if __name__ == '__main__':
+    # 为什么这里单独调用就报错了
+    print(get_base_conf_obj().__dict__)

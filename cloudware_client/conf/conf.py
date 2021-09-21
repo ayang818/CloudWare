@@ -1,11 +1,11 @@
 from cloudware_gui.util import log
-from cloudware_client.util.json import unmarshal_json, marshal_obj
+from cloudware_client.util.json_util import unmarshal_json, marshal_obj
 import os
 import json
 import shortuuid
 import logging
 
-base_dir = os.path.join(os.path.expanduser('~'), ".cloudware/")
+base_dir = os.path.join(os.path.expanduser('~'), ".cloudware\\")
 base_conf_file_name = 'conf.json'
 conf = None
 
@@ -22,6 +22,7 @@ class CloudWareConf(object):
     paste_hot_key = "ALT ALT"
 
 
+# TODO 这里很奇怪，应用内运行就能 load 成功，单独启动就不行
 def read_conf_from_file(path):
     conf_obj = None
     with open(path, 'r') as cf:
@@ -49,7 +50,7 @@ def check_conf_init():
         os.makedirs(base_dir)
     base_conf_file = os.path.join(base_dir, base_conf_file_name)
     if not os.path.exists(base_conf_file):
-        logging.warn("配置文件不存在，初始化~")
+        logging.warning("配置文件不存在，初始化~")
         # 写入配置文件
         with open(base_conf_file, "w") as bf:
             json_text = marshal_obj(CloudWareConf())
@@ -71,3 +72,5 @@ check_conf_init()
 if __name__ == '__main__':
     print(unmarshal_json('{"secret_key": "hellojjl"}', CloudWareConf).__dict__)
     print(marshal_obj(CloudWareConf()))
+    print(get_base_conf_obj().__dict__)
+    # print(read_conf_from_file("C:\\Users\\cheng\\.cloudware\\conf.json").__dict__)
