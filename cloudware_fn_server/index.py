@@ -22,6 +22,7 @@ def parse_params(body, type):
     params = {}
     if type == 'json':
         try:
+            logging.info(body)
             params = json.loads(body)
         except Exception as e:
             logging.error("post 参数解析失败")

@@ -1,15 +1,20 @@
 import logging
 import os
 
-from cloudware_client.conf.conf import get_base_conf_obj
+import requests
+from cloudware_client.conf.conf import get_base_conf_obj, remote_server
+from cloudware_client.util.account import AccountUtil
+from cloudware_client.util.encrypt import EncryptUtil
+import time
 
 base_spliter = "|.#.#.#.#.|\n"
 
 
 class ClipboardUtil(object):
     cache_record_list = []
-    # 本地历史纪录 tag。fetch
-    local_history_record_tag = ""
+    # 本地历史纪录 id
+    # TODO 持久化，重启不失效
+    local_tag_seq_id = ""
 
     @classmethod
     def batch_get_records(cls, start_pos=0, number=100):
@@ -56,8 +61,54 @@ class ClipboardUtil(object):
         :param content_type:
         :return:
         """
-        pass
+        user_id = AccountUtil.get_user_id()
+        secret_text = ""
+        # 目前只支持 text
+        if content_type == 'text':
+            secret_text = EncryptUtil.encrypt(content, AccountUtil.get_secret_key())
+            if not secret_text:
+                logging.error("加密失败")
+                return
+            # if success : update local_tag_seq
+        device_id = AccountUtil.get_device_id()
+        seq_id = cls.get_tag_seq_id()
+        params = {
+            "user_id": user_id,
+            "secret_text": secret_text,
+            "device_id": device_id,
+            "tag_seq": seq_id
+        }
+        #  将当前这条纪录更新到远端
+        resp = requests.post(remote_server + "history/post_item", json=params)
+        if resp.status_code == 200:
+            # 同步更新本地 seq
+            cls.local_tag_seq_id = seq_id
+            logging.info("成功更新到远端；cur seq=%s", cls.local_tag_seq_id)
 
     @classmethod
     def sync_from_remote(cls):
-        pass
+        user_id = AccountUtil.get_user_id()
+        current_seq_id = cls.local_tag_seq_id
+        if not current_seq_id:
+            # 如果没有，那就使用当前时间，不对历史纪录做获取
+            current_seq_id = cls.get_tag_seq_id()
+        # 从 remote_cloudware 获取 所有 大于 current_seq_id 的 history； return []
+        params = {
+            "user_id": user_id,
+            "seq_id": current_seq_id
+        }
+        resp = requests.get(remote_server + "history/get_item", params=params)
+        if resp.status_code == 200:
+            # 回刷纪录
+            logging.info("成功回刷纪录，cur seq=%s", cls.local_tag_seq_id)
+
+    @classmethod
+    def get_tag_seq_id(cls):
+        # TODO
+        #  暂时用毫秒级时间戳来表示 tag_seq_id
+        return int(round(time.time() * 1000))
+
+
+if __name__ == '__main__':
+    ClipboardUtil.sync_to_remote("helloworld", "text")
+    ClipboardUtil.sync_from_remote()

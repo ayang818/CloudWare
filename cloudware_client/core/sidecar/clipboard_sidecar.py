@@ -54,7 +54,7 @@ class ClipBoardSideCar(BaseSideCar):
             with open(n_conf.history_file_path, 'a') as f:
                 f.write(content + '\n' + base_spliter)
             logging.info('suc sync to history file')
-            # 2. send to remote
+            # TODO 2. sync to remote
         else:
             """
             忽略重复复制

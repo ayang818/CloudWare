@@ -29,5 +29,5 @@ class AccountUtil(object):
 
 
 if __name__ == '__main__':
-    # 为什么这里单独调用就报错了
+    # 为什么这里单独调用就报错了。result: json 包和 文件名 同名了
     print(get_base_conf_obj().__dict__)
