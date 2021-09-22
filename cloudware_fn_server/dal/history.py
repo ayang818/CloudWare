@@ -19,5 +19,5 @@ class HistoryRecordDAL(object):
     def query_un_sync(cls, user_id, seq_id):
         session = get_session()
         record_list = session.query(CWHistoryRecord).filter(CWHistoryRecord.user_id == user_id,
-                                                            CWHistoryRecord.seq_id >= seq_id).all()
+                                                            CWHistoryRecord.seq_id > seq_id).all()
         return record_list
