@@ -73,7 +73,7 @@ class ClipboardUtil(object):
                 return
             # if success : update local_tag_seq
         device_id = AccountUtil.get_device_id()
-        seq_id = cls.get_tag_seq_id()
+        seq_id = cls.generate_tag_seq_id()
         params = {
             "user_id": user_id,
             "secret_text": secret_text,
@@ -90,7 +90,6 @@ class ClipboardUtil(object):
     @classmethod
     def sync_from_remote(cls, start_seq=None):
         user_id = AccountUtil.get_user_id()
-        current_seq_id = cls.local_tag_seq_id
         # 如果没有，那就使用当前时间，不对历史纪录做获取
         current_seq_id = start_seq if start_seq else cls.get_tag_seq_id()
         # 从 remote_cloudware 获取 所有 大于 current_seq_id 的 history； return []
@@ -120,10 +119,17 @@ class ClipboardUtil(object):
             logging.info("成功回刷纪录，cur seq=%s", cls.local_tag_seq_id)
 
     @classmethod
-    def get_tag_seq_id(cls):
-        # TODO
-        #  暂时用毫秒级时间戳来表示 tag_seq_id
+    def generate_tag_seq_id(cls):
         return int(round(time.time() * 1000))
+
+    @classmethod
+    def get_tag_seq_id(cls):
+        #  暂时用毫秒级时间戳来表示 tag_seq_id
+        return cls.local_tag_seq_id if cls.local_tag_seq_id else int(round(time.time() * 1000))
+
+    @classmethod
+    def set_tag_seq_id(cls, seq_id):
+        cls.local_tag_seq_id = seq_id
 
     @classmethod
     def write_local_history(cls, content, n_conf=None):

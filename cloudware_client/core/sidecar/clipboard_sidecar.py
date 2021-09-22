@@ -53,9 +53,11 @@ class ClipBoardSideCar(BaseSideCar):
             # TODO 写性能优化
             ClipboardUtil.write_local_history(content, n_conf)
             logging.info('suc sync to history file')
-            # TODO 2. sync to remote
-            # config kaiguan
+            # 2. sync to remote
+            # TODO config switch to control if sync 2 remote
             ClipboardUtil.sync_to_remote(content, 'text')
+            # 3. sync from remote
+            ClipboardUtil.sync_from_remote()
         else:
             """
             忽略重复复制
