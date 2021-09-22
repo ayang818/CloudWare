@@ -62,7 +62,7 @@ class BaseView(wx.Frame):
                 self.list_box.SetSelection(self.current_idx)
         elif key == 67:
             # 如果是 c，就复制内容到剪贴板里，然后关闭
-            pyperclip.copy(self.history_record_list[self.current_idx])
+            pyperclip.copy(self.history_record_list[self.list_box.GetSelection()])
             self.Show(False)
 
     def quick_paste(self, event):
