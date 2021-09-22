@@ -116,7 +116,7 @@ class ClipboardUtil(object):
                     # real write to local history file
                     cls.write_local_history(origin_content)
                     logging.info("回刷记录=%s", origin_content)
-            logging.info("成功回刷纪录，cur seq=%s", cls.local_tag_seq_id)
+                logging.info("成功回刷纪录，cur seq=%s", cls.local_tag_seq_id)
 
     @classmethod
     def generate_tag_seq_id(cls):
