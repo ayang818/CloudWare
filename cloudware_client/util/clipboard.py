@@ -116,6 +116,7 @@ class ClipboardUtil(object):
                 if last != origin_content:
                     # real write to local history file
                     cls.write_local_history(origin_content)
+                    logging.info("回刷记录=%s", origin_content)
             logging.info("成功回刷纪录，cur seq=%s", cls.local_tag_seq_id)
 
     @classmethod
@@ -134,4 +135,6 @@ class ClipboardUtil(object):
 
 if __name__ == '__main__':
     # ClipboardUtil.sync_to_remote("loveu jjl", "text")
+    user_id = AccountUtil.get_user_id()
+    print("user_id=%s" % user_id)
     ClipboardUtil.sync_from_remote(1632241526978)

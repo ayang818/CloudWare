@@ -1,11 +1,10 @@
 import logging
 import sys
 
-import wx
-from cloudware_client.core.sidecar.clipboard_sidecar import ClipboardUtil
-from cloudware_gui.util.view import ViewUtil
-from cloudware_gui.const.router_const import INDEX, EMPTY
 import pyperclip
+import wx
+
+from cloudware_client.core.sidecar.clipboard_sidecar import ClipboardUtil
 
 
 class BaseView(wx.Frame):

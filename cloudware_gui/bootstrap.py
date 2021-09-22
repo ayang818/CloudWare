@@ -6,7 +6,7 @@ import wx
 from cloudware_client.bootstrap import start
 from cloudware_client.conf.conf import check_conf_init
 from cloudware_client.conf.conf import get_base_conf_obj
-from cloudware_gui.const.router_const import INDEX, EMPTY
+from cloudware_gui.const.router_const import INDEX
 from cloudware_gui.util.log import config_logger
 from cloudware_gui.util.view import ViewUtil
 
@@ -42,4 +42,8 @@ def main():
 
 
 if __name__ == '__main__':
+    from cloudware_client.util.account import AccountUtil
+
+    logging.info("USER_ID=%s; DEVICE_ID=%s; SECRET_KEY=%s", AccountUtil.get_user_id(), AccountUtil.get_device_id(),
+                 AccountUtil.get_secret_key())
     main()
