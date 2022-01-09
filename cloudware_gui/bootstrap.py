@@ -2,6 +2,10 @@ import logging
 import threading
 
 import wx
+import sys, os
+os.path.abspath(os.path.dirname(__file__))
+print()
+sys.path.insert(0, os.path.dirname(__file__) + '/../')
 
 from cloudware_client.bootstrap import start
 from cloudware_client.conf.conf import check_conf_init

@@ -7,7 +7,7 @@ import logging
 
 base_dir = os.path.join(os.path.expanduser('~'), ".cloudware\\")
 base_conf_file_name = 'conf.json'
-remote_server = "https://1455549509071075.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/cloudware_serverless/cloudware_core/"
+remote_server = ""
 conf = None
 logging.getLogger().setLevel(logging.INFO)
 

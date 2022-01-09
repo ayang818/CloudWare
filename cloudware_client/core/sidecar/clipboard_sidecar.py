@@ -21,7 +21,7 @@ class ClipBoardSideCar(BaseSideCar):
 
     def process(self):
         # 0. sync from remote
-        ClipboardUtil.sync_from_remote()
+        # ClipboardUtil.sync_from_remote()
         content = self.target.fetch_one()
         # 如果为空，可能是图片文件，读出二进制文件
         is_pic = False
@@ -57,7 +57,7 @@ class ClipBoardSideCar(BaseSideCar):
             logging.info('suc sync to history file')
             # 2. sync to remote
             # TODO config switch to control if sync 2 remote
-            ClipboardUtil.sync_to_remote(content, 'text')
+            # ClipboardUtil.sync_to_remote(content, 'text')
         else:
             """
             忽略重复复制
